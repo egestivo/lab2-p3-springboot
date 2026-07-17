@@ -27,4 +27,4 @@ jobs:
         run: ./mvnw test
 
       - name: Ejecutar Build
-        run: ./mvnw build
+        run: ./mvnw clean package
