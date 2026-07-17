@@ -20,6 +20,9 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Permisos de ejecución
+        run: chmod +x ./mvnw
+
       - name: Ejecutar pruebas
         run: ./mvnw test
 
