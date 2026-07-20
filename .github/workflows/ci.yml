@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: springboot-estivo-jar
-          path: build/libs/*.jar
+          path: target/*.jar
