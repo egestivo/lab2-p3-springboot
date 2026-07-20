@@ -98,10 +98,32 @@ public class WalletServiceTest {
         Assertions.assertEquals(newBalance, saved.getBalance());
     }
 
-//    @Test
-//    void () {
-//
-//    }
+    @Test
+    void withdrawShouldUpdateBalanceAndSaveUsingCaptor() {
+        // Arrange
+        Wallet wallet = new Wallet("estiven.ona@espe.edu.ec", 150.00);
+        String walletId = wallet.getId();
+        double amountToWithdraw = 50.00;
+        double expectedBalance = 100.00;
+
+        Mockito.when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
+        Mockito.when(walletRepository.save(ArgumentMatchers.any(Wallet.class))).thenAnswer(i ->
+                i.getArguments()[0]);
+
+        ArgumentCaptor<Wallet> captor = ArgumentCaptor.forClass(Wallet.class);
+
+        // Act
+        double newBalance = walletService.withdraw(walletId, amountToWithdraw);
+
+        // Assert
+        Assertions.assertEquals(expectedBalance, newBalance);
+
+        Mockito.verify(walletRepository).findById(walletId);
+        Mockito.verify(walletRepository).save(captor.capture());
+
+        Wallet savedWallet = captor.getValue();
+        Assertions.assertEquals(expectedBalance, savedWallet.getBalance());
+    }
 
     @Test
     void withdrawWithInsufficientFundsShouldThrowExceptionAndNotSave(){
